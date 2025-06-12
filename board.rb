@@ -26,6 +26,34 @@ class Board
     end
   end
 
+  def display
+    puts "=== MASTERMIND ===".center(20)
+    puts "-" * 20
+
+    @guesses.each_with_index do |guess, i|
+      print "#{i + 1}.".ljust(3)
+      guess.each do |color|
+        print "⬤".colorize(color)
+      end
+   
+      print " | "
+
+      @feedback[i].each do |peg|
+        print "●".colorize(peg)
+      end
+      puts
+    end
+
+    (12 - @guesses.length).times do |i|
+      print "#{@guesses.length + i + 1}".ljust(3)
+      CODE_LENGTH.times { print "○ "}
+      puts
+    end
+
+    puts "-" * 20
+    puts "Colors: #{COLORS.map { |c| "⬤".colorize(c) }.join(" ")}"
+  end
+
   private
 
   def valid_code?(code)
@@ -39,14 +67,14 @@ class Board
     guess_copy = @guess.dup
 
     guess.each_with_index do |color, i|
-      if color == secret_code[i]
+      if color == @secret_code[i]
         color_and_location_matches += 1
         secret_code_copy[i] = nil
         guess_copy[i] = nil
       end
     end
 
-    guess_copy.each_with_index do |color, i|
+    guess_copy.each do |color|
       next if color.nil?
       if secret_code_copy.include?(color)
         color_matches += 1
