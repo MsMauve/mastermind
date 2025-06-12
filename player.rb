@@ -21,6 +21,22 @@ class Player
     end
   end
 
+  def create_code(available_colors)
+    puts "#{@name}, create your secret code now!"
+    puts "Available colors: #{available_colors.join(', ')}"
+
+    loop do
+      print "Enter 4 colors (separated with a space): "
+      guess = gets.chomp.downcase.split
+
+      if valid_guess?(guess, available_colors)
+        return guess.map(&:to_sym)
+      else
+        puts "Nice try! Enter a valid code, please."
+      end
+    end
+  end
+
   private
 
   def valid_guess?(input, available_colors)
