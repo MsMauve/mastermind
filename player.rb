@@ -7,7 +7,7 @@ class Player
   end
 
   def make_guess(available_colors)
-    puts "#{@name}'s turn"
+    puts "#{@name}'s turn."
     puts "Available colors: #{available_colors.join(', ')}"
     loop do
       print "Enter four colors (separated with a space): "

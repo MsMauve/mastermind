@@ -13,6 +13,19 @@ class Board
 
   def create_secret_code
     @secret_code = CODE_LENGTH.times.map { COLORS.sample }
+    system('clear')
+    puts "Code set: starting game!"
+  end
+
+  def set_code(code)
+    if valid_code?(code)
+      @secret_code = code
+      system('clear')
+      puts "Code accepted: starting game!"
+      true
+    else
+      puts "Invalid code! Must be #{CODE_LENGTH} available colors: #{COLORS.join(', ')}"
+    end
   end
 
   def add_guess(guess)
@@ -77,6 +90,8 @@ class Board
       puts "The game's not over yet, silly!"
     end
   end
+
+
 
   private
 

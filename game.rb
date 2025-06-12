@@ -8,7 +8,14 @@ class Game
     puts "You have 12 turns to guess the code."
 
     until @board.game_over?
-      @board.displayguess = @player.make_guess(@board.class::COLORS)
+      @board.display 
+      guess = if @player.role == :guesser
+                @player.make_guess(@board.class::COLORS)
+              else
+                result = computer_guess
+                sleep(3)
+                result
+              end
       @board.add_guess(guess)
     end
 
@@ -17,9 +24,10 @@ class Game
 
     case @board.status
     when :won
-      puts "Well done; we'll lick Fritz for sure now!"
-    when :lose
-      puts "I mean, it's called Enigma for a reason..."
+      winner = @player.role == :guesser ? "You've" : "The computer has"
+      puts "#{winner} cracked the code!"
+    when :lost
+      puts "It'll be cracked someday, surely..."
     end
   end
 
@@ -27,7 +35,6 @@ class Game
 
   def setup_game
     @board = Board.new
-    choose_role
     setup_players
   end
 
@@ -58,6 +65,9 @@ class Game
   end
 
   def computer_guess
-    Array.new(4) { @board.class::COLORS.sample }
+    puts "Computer is thinking..."
+    guess = Array.new(@board.class::CODE_LENGTH) { @board.class::COLORS.sample }
+    puts "Computer guesses: #{guess.join(' ')}"
+    guess
   end
 end
