@@ -16,7 +16,7 @@ class Board
   end
 
   def add_guess(guess)
-    if vaid_code?(guess)
+    if valid_code?(guess)
       @guesses.append(guess)
       @feedback.append(generate_feedback(guess))
       true
@@ -56,6 +56,10 @@ class Board
 
   private
 
+  def won?
+    
+  end
+
   def valid_code?(code)
     code.length == CODE_LENGTH && code.all? { |color| COLORS.include?(color) }
   end
@@ -64,7 +68,7 @@ class Board
     color_and_location_matches = 0
     color_matches = 0
     secret_code_copy = @secret_code.dup
-    guess_copy = @guess.dup
+    guess_copy = guess.dup
 
     guess.each_with_index do |color, i|
       if color == @secret_code[i]
