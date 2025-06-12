@@ -54,10 +54,39 @@ class Board
     puts "Colors: #{COLORS.map { |c| "⬤".colorize(c) }.join(" ")}"
   end
 
+  def game_over?
+    won? || lost?
+  end
+
+  def status
+    if won?
+      :won
+    elsif lost?
+      :lost
+    else
+      :playing
+    end
+  end
+
+  def reveal_code
+    if game_over?
+      print "Secret code was: "
+      @secret_code.each { |color| print "⬤ ".colorize(color) }
+      puts
+    else
+      puts "The game's not over yet, silly!"
+    end
+  end
+
   private
 
   def won?
-    
+    return false if @guesses.empty?
+    @feedback.last == Array.new(CODE_LENGTH, :black)
+  end
+
+  def lost?
+    @guesses.length >= 12
   end
 
   def valid_code?(code)
